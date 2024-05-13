@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sophie Bluel - Architecte d'intérieur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Work+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="./assets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="./assets/js/pages/index.js" type="module" defer></script>
+    <script src="./assets/js/modale.js" type="module" defer></script>
+  </head>
+  <body>
+    <div class="modal1" id="modal1">
+      <div class="modal">
+        <div class="closeModal1" id="closeModal1">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+        <h2>Galerie photo</h2>
+        <div class="items"></div>
+        <div class="separateur"></div>
+        <button class="bouton" id="openModal2">Ajouter une photo</button>
+      </div>
+    </div>
+    <div class="modal2" id="modal2">
+      <div class="modal">
+        <div class="closeModal2">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+        <div class="retourModal">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <h2>Ajout photo</h2>
+        <div class="rectangleModal2">
+          <i class="fa-regular fa-image"></i>
+          <div class="ajoutImage">
+            <label for="uploadImage" class="bouton">+ Ajouter photo</label>
+            <input type="file" id="uploadImage" />
+          </div>
+          <p class="format">jpg, png : 4mo max</p>
+          <img id="imagePreview" src="#" alt="Preview de l'image" />
+        </div>
+        <div id="description">
+          <label for="form-title">Titre</label>
+          <input type="text" name="title" id="form-title" />
+          <label for="select-categories">Catégorie</label>
+          <select name="categories" id="select-categories"></select>
+        </div>
+        <div class="separateur"></div>
+        <button class="bouton-modal2" id="submitBtn">Valider</button>
+      </div>
+    </div>
+    <div class="editeur">
+      <i class="fa-regular fa-pen-to-square"></i>
+      <p>Mode édition</p>
+    </div>
+    <header>
+      <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+      <nav>
+        <ul>
+          <li>projets</li>
+          <li>contact</li>
+          <li id="loginForm">
+            <a href="./login.html">login</a>
+          </li>
+          <li id="logout">
+            <a href="./index.html">logout</a>
+          </li>
+          <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section id="introduction">
+        <figure>
+          <img src="./assets/images/sophie-bluel.png" alt="" />
+        </figure>
+        <article>
+          <h2>Designer d'espace</h2>
+          <p>
+            Je raconte votre histoire, je valorise vos idées. Je vous accompagne
+            de la conception à la livraison finale du chantier.
+          </p>
+          <p>
+            Chaque projet sera étudié en commun, de façon à mettre en valeur les
+            volumes, les matières et les couleurs dans le respect de l’esprit
+            des lieux et le choix adapté des matériaux. Le suivi du chantier
+            sera assuré dans le souci du détail, le respect du planning et du
+            budget.
+          </p>
+          <p>
+            En cas de besoin, une équipe pluridisciplinaire peut-être constituée
+            : architecte DPLG, décorateur(trice)
+          </p>
+        </article>
+      </section>
+      <section id="portfolio">
+        <h2>
+          Mes Projets
+          <button id="openModal1" class="ouverture">
+            <i class="fa-regular fa-pen-to-square"></i>
+            <span class="modifier">modifier</span>
+          </button>
+        </h2>
+        <div class="filtres"></div>
+        <div class="gallery"></div>
+      </section>
+      <section id="contact">
+        <h2>Contact</h2>
+        <p>Vous avez un projet ? Discutons-en !</p>
+        <form action="#" method="post">
+          <label for="name">Nom</label>
+          <input type="text" name="name" id="name" />
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" />
+          <label for="message">Message</label>
+          <textarea name="message" id="message" cols="30" rows="10"></textarea>
+          <input type="submit" value="Envoyer" />
+          <span>Mot de passe oublié</span>
+        </form>
+      </section>
+    </main>
+    <footer>
+      <nav>
+        <ul>
+          <li>Mentions Légales</li>
+        </ul>
+      </nav>
+    </footer>
+  </body>
+</html>
