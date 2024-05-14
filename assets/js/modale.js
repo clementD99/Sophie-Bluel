@@ -50,8 +50,6 @@ const categories = await getCategories();
 const select = document.getElementById("select-categories");
 const option = document.createElement("option");
 select.appendChild(option);
-//  <option value=""></option>
-// <option value="volvo">Volvo</option>
 
 for (const category of categories) {
   const option = document.createElement("option");
@@ -75,9 +73,7 @@ document.getElementById("uploadImage").addEventListener("change", function () {
     imagePreview.style.display = "block";
 
     // Pour cacher les éléments dans le rectangle
-    const elementsToHide = document.querySelectorAll(
-      ".fa-image, .ajoutImage, .format"
-    );
+    const elementsToHide = document.querySelectorAll(".fa-image, .ajoutImage, .format");
     elementsToHide.forEach(function (element) {
       element.style.display = "none";
     });
@@ -92,12 +88,7 @@ document.getElementById("uploadImage").addEventListener("change", function () {
 // ----- FIN Code pour retirer les classes pour que seule l'image apparaisse sur la 2e modale ----- //
 
 // ----- Code pour empêcher la validation de l'envoi si l'un des 3 champs n'est pas rempli ----- //
-function setupSubmitBtn(
-  uploadImageId,
-  formTitleId,
-  selectCategoriesId,
-  submitBtnId
-) {
+function setupSubmitBtn(uploadImageId, formTitleId, selectCategoriesId, submitBtnId) {
   const uploadImage = document.getElementById(uploadImageId);
   const formTitle = document.getElementById(formTitleId);
   const selectCategories = document.getElementById(selectCategoriesId);
@@ -154,6 +145,8 @@ document.getElementById("submitBtn").addEventListener("click", function () {
     .then((response) => {
       if (response.ok) {
         console.log("Image ajoutée");
+        modal1.style.display = "none";
+        modal2.style.display = "none";
       } else {
         console.error("Problème lors de l'ajout");
       }
@@ -171,7 +164,7 @@ export function addWorksModal1(works) {
 
   for (const work of works) {
     html += `
-            <div class="item">
+            <div class="item" data-id="${work.id}">
                 <div class="corbeille"><i class="fa-solid fa-trash-can"></i></div>
                 <img src="${work.imageUrl}" alt="${work.title}" />
             </div>
@@ -180,12 +173,22 @@ export function addWorksModal1(works) {
 
   const items = document.querySelector(".items");
   items.innerHTML = html;
+
+  const deleteIcons = document.querySelectorAll(".fa-trash-can");
+  deleteIcons.forEach((deleteIcon) => {
+    deleteIcon.addEventListener("click", async (event) => {
+      console.log("TESTTTTT");
+      const item = event.target.closest(".item");
+      const itemId = event.target.closest(".item").dataset.id;
+      await suppressionProjetModale(item, itemId);
+    });
+  });
 }
 // ----- FIN Affiche les photos dans la modale ----- //
 
 // ----- Code pour supprimer une image avec API ----- //
 
-async function suppressionProjetModale(id) {
+async function suppressionProjetModale(item, id) {
   try {
     const token = localStorage.getItem("token");
 
@@ -197,9 +200,10 @@ async function suppressionProjetModale(id) {
     });
 
     if (response.ok) {
-      document.querySelectorAll(`figure[data-id="${id}"]`).forEach((item) => {
-        item.parentNode.removeChild(item);
-      });
+      item.remove();
+      // document.querySelectorAll(`figure[data-id="${id}"]`).forEach((item) => {
+      //   item.parentNode.removeChild(item);
+      // });
       alert("L'élément a été supprimé !");
     } else {
       throw new Error("La suppression du projet a échoué");
@@ -209,16 +213,6 @@ async function suppressionProjetModale(id) {
     alert("Une erreur est survenue lors de la suppression.");
   }
 }
-
-const deleteIcons = document.querySelectorAll(".fa-trash-can");
-
-deleteIcons.forEach((deleteIcon) => {
-  deleteIcon.addEventListener("click", async (event) => {
-    const itemId = event.target.closest(".trash-can").dataset.id;
-    await suppressionProjetModale(itemId);
-  });
-});
-
 // ----- FIN Code pour supprimer une image avec API ----- //
 
 // ----- Code pour générer la modale en JS ----- //
@@ -256,7 +250,7 @@ deleteIcons.forEach((deleteIcon) => {
     if (items) {
       const itemsContainer = document.createElement("div");
       itemsContainer.classList.add("items");
-      items.forEach(src => {
+      items.forEach((src) => {
         const item = createItem(src);
         itemsContainer.appendChild(item);
       });
@@ -293,7 +287,7 @@ deleteIcons.forEach((deleteIcon) => {
     const img = document.createElement("img");
     img.src = src;
     img.alt = "";
-    
+
     item.appendChild(corbeille);
     item.appendChild(img);
 
@@ -311,7 +305,8 @@ deleteIcons.forEach((deleteIcon) => {
     "./assets/images/appartement-paris-xviii.png",
     "./assets/images/le-coteau-cassis.png",
     "./assets/images/bar-lullaby-paris.png",
-    "./assets/images/hotel-first-arte-new-delhi.png"
+    "./assets/images/hotel-first-arte-new-delhi.png",
+    "./assets/images/malt-et-juniper-new-york.png",
   ];
 
   const modal1 = createModal("Galerie photo", imageSources);
