@@ -188,6 +188,10 @@ li:hover {
   color: #b1663c;
 }
 
+a {
+  color: #000000;
+}
+
 /*****mode éditeur*****/
 
 .editeur {
