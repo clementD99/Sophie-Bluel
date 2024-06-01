@@ -157,10 +157,8 @@ document.getElementById("submitBtn").addEventListener("click", function (event) 
       modal2.style.display = "none";
 
       // Permet d'ajouter l'image + le titre de l'image sans avoir à recharger la page
-      const imageUrl = URL.createObjectURL(image);
-
       const imgElement = document.createElement("img");
-      imgElement.src = imageUrl;
+      imgElement.src = URL.createObjectURL(image);
       imgElement.alt = title;
 
       const titleElement = document.createElement("p");
@@ -168,6 +166,7 @@ document.getElementById("submitBtn").addEventListener("click", function (event) 
 
       const containerElement = document.createElement("div");
       containerElement.className = "gallery-item";
+      containerElement.setAttribute("data-id", data.id);
       containerElement.appendChild(imgElement);
       containerElement.appendChild(titleElement);
 
@@ -177,12 +176,42 @@ document.getElementById("submitBtn").addEventListener("click", function (event) 
       } else {
         console.error("L'élément avec la classe 'gallery' est introuvable.");
       }
+
+      // Ajout de l'image à la première modale
+      const item = document.createElement("div");
+      item.classList.add("item");
+      item.setAttribute("data-id", data.id);
+
+      const corbeille = document.createElement("div");
+      corbeille.classList.add("corbeille");
+      const trashIcon = document.createElement("i");
+      trashIcon.classList.add("fa-solid", "fa-trash-can");
+      corbeille.appendChild(trashIcon);
+
+      const imgInModal = document.createElement("img");
+      imgInModal.src = data.imageUrl;
+      imgInModal.alt = title;
+
+      item.appendChild(corbeille);
+      item.appendChild(imgInModal);
+
+      const itemsContainer = document.querySelector(".items");
+      if (itemsContainer) {
+        itemsContainer.appendChild(item);
+
+        // Permet de supprimer une image sans avoir à recharger la page
+        trashIcon.addEventListener("click", async (event) => {
+          const itemId = item.dataset.id;
+          await suppressionProjetModale(item, itemId);
+        });
+      } else {
+        console.error("L'élément avec la classe 'items' est introuvable.");
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 });
-
 // ----- FIN Appel API du bouton pour la validation d'une photo ----- //
 
 // ----- Affiche les photos dans la modale ----- //
@@ -346,5 +375,4 @@ async function suppressionProjetModale(item, id) {
   const modal2 = createModal("Ajout photo", null, true);
   document.body.appendChild(modal2);
 })();
-
 // ----- FIN Code pour générer la modale en JS ----- //
