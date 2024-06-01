@@ -73,7 +73,9 @@ document.getElementById("uploadImage").addEventListener("change", function () {
     imagePreview.style.display = "block";
 
     // Pour cacher les éléments dans le rectangle
-    const elementsToHide = document.querySelectorAll(".fa-image, .ajoutImage, .format");
+    const elementsToHide = document.querySelectorAll(
+      ".fa-image, .ajoutImage, .format"
+    );
     elementsToHide.forEach(function (element) {
       element.style.display = "none";
     });
@@ -88,7 +90,12 @@ document.getElementById("uploadImage").addEventListener("change", function () {
 // ----- FIN Code pour retirer les classes pour que seule l'image apparaisse sur la 2e modale ----- //
 
 // ----- Code pour empêcher la validation de l'envoi si l'un des 3 champs n'est pas rempli ----- //
-function setupSubmitBtn(uploadImageId, formTitleId, selectCategoriesId, submitBtnId) {
+function setupSubmitBtn(
+  uploadImageId,
+  formTitleId,
+  selectCategoriesId,
+  submitBtnId
+) {
   const uploadImage = document.getElementById(uploadImageId);
   const formTitle = document.getElementById(formTitleId);
   const selectCategories = document.getElementById(selectCategoriesId);
@@ -124,94 +131,117 @@ setupSubmitBtn("uploadImage", "form-title", "select-categories", "submitBtn");
 
 // ----- Appel API du bouton pour la validation d'une photo ----- //
 
-document.getElementById("submitBtn").addEventListener("click", function (event) {
-  event.preventDefault();
+document
+  .getElementById("submitBtn")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
 
-  const title = document.getElementById("form-title").value;
-  const category = parseInt(document.getElementById("select-categories").value);
-  const image = document.getElementById("uploadImage").files[0];
+    const title = document.getElementById("form-title").value;
+    const category = parseInt(
+      document.getElementById("select-categories").value
+    );
+    const image = document.getElementById("uploadImage").files[0];
 
-  let formData = new FormData();
+    let formData = new FormData();
 
-  formData.append("image", image);
-  formData.append("title", title);
-  formData.append("category", category);
+    formData.append("image", image);
+    formData.append("title", title);
+    formData.append("category", category);
 
-  fetch("http://localhost:5678/api/works", {
-    method: "POST",
-    body: formData,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Problème lors de l'ajout");
-      }
+    fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
-    .then((data) => {
-      console.log("Image ajoutée");
-      modal1.style.display = "none";
-      modal2.style.display = "none";
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Problème lors de l'ajout");
+        }
+      })
+      .then((data) => {
+        console.log("Image ajoutée");
+        modal1.style.display = "none";
+        modal2.style.display = "none";
 
-      // Permet d'ajouter l'image + le titre de l'image sans avoir à recharger la page
-      const imgElement = document.createElement("img");
-      imgElement.src = URL.createObjectURL(image);
-      imgElement.alt = title;
+        // Permet d'ajouter l'image + le titre de l'image sans avoir à recharger la page
+        const imgElement = document.createElement("img");
+        imgElement.src = URL.createObjectURL(image);
+        imgElement.alt = title;
 
-      const titleElement = document.createElement("p");
-      titleElement.textContent = title;
+        const titleElement = document.createElement("p");
+        titleElement.textContent = title;
 
-      const containerElement = document.createElement("div");
-      containerElement.className = "gallery-item";
-      containerElement.setAttribute("data-id", data.id);
-      containerElement.appendChild(imgElement);
-      containerElement.appendChild(titleElement);
+        const containerElement = document.createElement("div");
+        containerElement.className = "gallery-item";
+        containerElement.setAttribute("data-id", data.id);
+        containerElement.appendChild(imgElement);
+        containerElement.appendChild(titleElement);
 
-      const gallery = document.querySelector(".gallery");
-      if (gallery) {
-        gallery.appendChild(containerElement);
-      } else {
-        console.error("L'élément avec la classe 'gallery' est introuvable.");
-      }
+        const gallery = document.querySelector(".gallery");
+        if (gallery) {
+          gallery.appendChild(containerElement);
+        } else {
+          console.error("L'élément avec la classe 'gallery' est introuvable.");
+        }
 
-      // Ajout de l'image à la première modale
-      const item = document.createElement("div");
-      item.classList.add("item");
-      item.setAttribute("data-id", data.id);
+        // Ajout de l'image à la première modale
+        const item = document.createElement("div");
+        item.classList.add("item");
+        item.setAttribute("data-id", data.id); // Ajout de l'id de l'élément
 
-      const corbeille = document.createElement("div");
-      corbeille.classList.add("corbeille");
-      const trashIcon = document.createElement("i");
-      trashIcon.classList.add("fa-solid", "fa-trash-can");
-      corbeille.appendChild(trashIcon);
+        const corbeille = document.createElement("div");
+        corbeille.classList.add("corbeille");
+        const trashIcon = document.createElement("i");
+        trashIcon.classList.add("fa-solid", "fa-trash-can");
+        corbeille.appendChild(trashIcon);
 
-      const imgInModal = document.createElement("img");
-      imgInModal.src = data.imageUrl;
-      imgInModal.alt = title;
+        const imgInModal = document.createElement("img");
+        imgInModal.src = data.imageUrl;
+        imgInModal.alt = title;
 
-      item.appendChild(corbeille);
-      item.appendChild(imgInModal);
+        item.appendChild(corbeille);
+        item.appendChild(imgInModal);
 
-      const itemsContainer = document.querySelector(".items");
-      if (itemsContainer) {
-        itemsContainer.appendChild(item);
+        const itemsContainer = document.querySelector(".items");
+        if (itemsContainer) {
+          itemsContainer.appendChild(item);
 
-        // Permet de supprimer une image sans avoir à recharger la page
-        trashIcon.addEventListener("click", async (event) => {
-          const itemId = item.dataset.id;
-          await suppressionProjetModale(item, itemId);
+          // Permet de supprimer une image sans avoir à recharger la page
+          trashIcon.addEventListener("click", async (event) => {
+            const itemId = item.dataset.id;
+            await suppressionProjetModale(item, itemId);
+          });
+        } else {
+          console.error("L'élément avec la classe 'items' est introuvable.");
+        }
+
+        // Code pour réinitialiser le fond de la 2e modale sans que les éléments précedents restent
+        document.getElementById("form-title").value = "";
+        document.getElementById("select-categories").value = "";
+        document.getElementById("uploadImage").value = "";
+
+        const imagePreview = document.getElementById("imagePreview");
+        imagePreview.style.display = "none";
+        imagePreview.src = "";
+
+        const elementsToShow = document.querySelectorAll(
+          ".fa-image, .ajoutImage, .format"
+        );
+        elementsToShow.forEach(function (element) {
+          element.style.display = "flex";
         });
-      } else {
-        console.error("L'élément avec la classe 'items' est introuvable.");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-});
+
+        const boutonModal = document.querySelector(".bouton-modal2");
+        boutonModal.classList.remove("uploaded");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
 // ----- FIN Appel API du bouton pour la validation d'une photo ----- //
 
 // ----- Affiche les photos dans la modale ----- //
@@ -264,7 +294,7 @@ async function suppressionProjetModale(item, id) {
       const galeryItemTrouve = galeryItem.querySelector(`[data-id="${id}"]`);
       galeryItemTrouve.remove();
 
-      alert("L'élément a été supprimé !");
+      alert("L'image a été supprimée !");
     } else {
       throw new Error("La suppression du projet a échoué");
     }
