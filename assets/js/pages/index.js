@@ -8,8 +8,6 @@ changeInterfaceIfAuthenticated();
 
 const works = await getWorks();
 const categories = await getCategories();
-console.log(categories);
-console.log(works);
 displayWorks(works);
 initFilters(categories, works);
 addWorksModal1(works);
