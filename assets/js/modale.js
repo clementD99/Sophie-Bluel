@@ -58,7 +58,6 @@ for (const category of categories) {
   select.appendChild(option);
 }
 
-console.log(categories);
 // FIN Code pour choisir les catégories pour la 2e modale
 
 // ----- Code pour retirer les classes pour que seule l'image apparaisse sur la 2e modale ----- //
@@ -191,7 +190,7 @@ document
         // Ajout de l'image à la première modale
         const item = document.createElement("div");
         item.classList.add("item");
-        item.setAttribute("data-id", data.id); // Ajout de l'id de l'élément
+        item.setAttribute("data-id", data.id);
 
         const corbeille = document.createElement("div");
         corbeille.classList.add("corbeille");
