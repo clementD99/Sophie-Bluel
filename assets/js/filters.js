@@ -15,6 +15,8 @@ function displayFilters(categories) {
   const filtersContainer = document.querySelector(".filtres");
   
   const tousButton = createFilterButton("Tous", 0);
+  tousButton.classList.remove("inactive");  // Permet de mettre le bouton "Tous" en vert même en
+  tousButton.classList.add("active");       // rafraichissant la page
   filtersContainer.appendChild(tousButton);
   
   // Créer les boutons pour chaque catégorie
@@ -45,8 +47,12 @@ async function addEventsToFilters(works, parent) {
       // inactive quand le bouton n'est pas cliqué
       filters.forEach(btn => {
         btn.classList.add("inactive");
+        btn.classList.remove("active");
       });
       this.classList.remove("inactive");
+      if (filterId === 0) {
+        this.classList.add("active");
+      }
     });
   });
 }
