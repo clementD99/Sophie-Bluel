@@ -3,7 +3,6 @@ export function displayWorks(works) {
 
   if (parent) {
     for (const work of works) {
-      console.log(work);
       parent.innerHTML += `
         <figure data-categoryId="${work.categoryId}" data-id=${work.id}>  
           <img src="${work.imageUrl}" alt="${work.title}">
